@@ -13,7 +13,7 @@ def load_data():
 df = load_data()
 
 # ---------------------- Sidebar Navigation ----------------------
-st.sidebar.title("📊 MTN Telecom Dashboard")
+st.sidebar.title("MTN Telecom Dashboard")
 section = st.sidebar.radio("Navigate", [
     "Customer Segmentation",
     "Churn Risk Analysis",
@@ -29,7 +29,7 @@ section = st.sidebar.radio("Navigate", [
 
 # ---------------------- Customer Segmentation ----------------------
 if section == "Customer Segmentation":
-    st.title("📌 Customer Segmentation")
+    st.title("Customer Segmentation")
     seg = df.groupby(['state', 'plan_type'])[
         'customer_id'].nunique().reset_index()
     seg = seg.rename(columns={'customer_id': 'customer_count'})
@@ -39,7 +39,7 @@ if section == "Customer Segmentation":
 
 # ---------------------- Churn Risk Analysis ----------------------
 elif section == "Churn Risk Analysis":
-    st.title("⚠️ Churn Risk Analysis")
+    st.title(" Churn Risk Analysis")
     churn_df = df[(df['payment_status'].isin(['Unpaid', 'Overdue'])) &
                   (df['data_usage_mb'] == 0) &
                   (df['voice_usage_minutes'] == 0) &
@@ -49,7 +49,7 @@ elif section == "Churn Risk Analysis":
 
 # ---------------------- Top Users & Revenue ----------------------
 elif section == "Top Users & Revenue":
-    st.title("🏆 Top Users and Revenue Contributors")
+    st.title("Top Users and Revenue Contributors")
     top_data_users = df.nlargest(10, 'data_usage_mb')
     fig1 = px.bar(top_data_users, x='full_name', y='data_usage_mb',
                   title='Top 10 Data Users', text='data_usage_mb')
@@ -64,7 +64,7 @@ elif section == "Top Users & Revenue":
 
 # ---------------------- KYC Compliance ----------------------
 elif section == "KYC Compliance":
-    st.title("📝 KYC Compliance Check")
+    st.title("KYC Compliance Check")
     kyc_df = df.groupby('kyc_status').agg(
         total_users=('customer_id', 'count'),
         defaulters=('payment_status', lambda x: x.isin(
@@ -76,7 +76,7 @@ elif section == "KYC Compliance":
 
 # ---------------------- Plan Performance ----------------------
 elif section == "Plan Performance":
-    st.title("📶 Plan Performance")
+    st.title("Plan Performance")
     plans = df.groupby(['plan_name', 'plan_type'])[
         'bill_amount'].sum().reset_index()
     fig = px.treemap(plans, path=['plan_type', 'plan_name'], values='bill_amount',
@@ -85,7 +85,7 @@ elif section == "Plan Performance":
 
 # ---------------------- Network Quality ----------------------
 elif section == "Network Quality":
-    st.title("📡 Network Quality Evaluation")
+    st.title("Network Quality Evaluation")
     net = df.groupby('state').agg(
         avg_score=('network_quality_score', 'mean'),
         avg_drops=('call_drop_rate', 'mean')
@@ -96,7 +96,7 @@ elif section == "Network Quality":
 
 # ---------------------- Payment Behavior ----------------------
 elif section == "Payment Behavior":
-    st.title("💳 Payment Method Trends")
+    st.title("Payment Method Trends")
     payments = df['payment_method'].value_counts().reset_index()
     payments.columns = ['payment_method', 'count']
     fig = px.pie(payments, names='payment_method', values='count',
@@ -106,7 +106,7 @@ elif section == "Payment Behavior":
 
 # ---------------------- Support Demand ----------------------
 elif section == "Support Demand":
-    st.title("📞 Customer Support Demand")
+    st.title("Customer Support Demand")
     support = df[df['support_tickets_count'] >= 3]
     fig = px.scatter(support, x='support_tickets_count', y='customer_satisfaction',
                      color='full_name', title='Support Tickets vs Satisfaction')
@@ -114,7 +114,7 @@ elif section == "Support Demand":
 
 # ---------------------- Customer Loyalty ----------------------
 elif section == "Customer Loyalty":
-    st.title("🤝 Loyalty and Referrals")
+    st.title("Loyalty and Referrals")
     loyalty = df.groupby('customer_tier').agg(
         avg_referrals=('referrals_made', 'mean'),
         total_referrals=('referrals_made', 'sum')
